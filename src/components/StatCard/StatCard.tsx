@@ -16,7 +16,7 @@ export interface StatCardProps extends Omit<React.HTMLAttributes<HTMLDivElement>
   
   // Visual Elements
   icon?: React.ReactNode
-  color?: 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'purple' | 'cyan' | 'rose'
+  color?: 'default' | 'primary' | 'success' | 'info' | 'warning' | 'teal' | 'cyan' | 'slate'
   
   // Chart/Visual (optional)
   chart?: React.ReactNode
@@ -141,25 +141,25 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
         trend: 'text-amber-600',
         gradient: 'from-amber-400 via-amber-500 to-orange-600'
       },
-      danger: {
-        bg: 'bg-gradient-to-br from-red-50 to-rose-50',
-        border: 'border-red-200',
-        shadow: 'shadow-red-100 hover:shadow-red-200',
-        icon: 'text-red-600',
-        value: 'text-red-900',
-        label: 'text-red-700',
-        trend: 'text-red-600',
-        gradient: 'from-red-400 via-red-500 to-rose-600'
+      info: {
+        bg: 'bg-gradient-to-br from-sky-50 to-blue-50',
+        border: 'border-sky-200',
+        shadow: 'shadow-sky-100 hover:shadow-sky-200',
+        icon: 'text-sky-600',
+        value: 'text-sky-900',
+        label: 'text-sky-700',
+        trend: 'text-sky-600',
+        gradient: 'from-sky-400 via-sky-500 to-blue-600'
       },
-      purple: {
-        bg: 'bg-gradient-to-br from-purple-50 to-violet-50',
-        border: 'border-purple-200',
-        shadow: 'shadow-purple-100 hover:shadow-purple-200',
-        icon: 'text-purple-600',
-        value: 'text-purple-900',
-        label: 'text-purple-700',
-        trend: 'text-purple-600',
-        gradient: 'from-purple-400 via-purple-500 to-violet-600'
+      teal: {
+        bg: 'bg-gradient-to-br from-teal-50 to-emerald-50',
+        border: 'border-teal-200',
+        shadow: 'shadow-teal-100 hover:shadow-teal-200',
+        icon: 'text-teal-600',
+        value: 'text-teal-900',
+        label: 'text-teal-700',
+        trend: 'text-teal-600',
+        gradient: 'from-teal-400 via-teal-500 to-emerald-600'
       },
       cyan: {
         bg: 'bg-gradient-to-br from-cyan-50 to-sky-50',
@@ -171,15 +171,15 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
         trend: 'text-cyan-600',
         gradient: 'from-cyan-400 via-cyan-500 to-sky-600'
       },
-      rose: {
-        bg: 'bg-gradient-to-br from-rose-50 to-pink-50',
-        border: 'border-rose-200',
-        shadow: 'shadow-rose-100 hover:shadow-rose-200',
-        icon: 'text-rose-600',
-        value: 'text-rose-900',
-        label: 'text-rose-700',
-        trend: 'text-rose-600',
-        gradient: 'from-rose-400 via-rose-500 to-pink-600'
+      slate: {
+        bg: 'bg-gradient-to-br from-slate-50 to-gray-50',
+        border: 'border-slate-200',
+        shadow: 'shadow-slate-100 hover:shadow-slate-200',
+        icon: 'text-slate-600',
+        value: 'text-slate-900',
+        label: 'text-slate-700',
+        trend: 'text-slate-600',
+        gradient: 'from-slate-400 via-slate-500 to-gray-600'
       }
     }
     

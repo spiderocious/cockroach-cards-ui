@@ -8,29 +8,20 @@ const meta: Meta<typeof ProfileCard> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'ProfileCard is a user profile display component with avatar, bio, and social actions. Perfect for user directories, team pages, and social networking interfaces.'
-      }
-    }
+        component: 'A comprehensive profile card component with stunning glassmorphism effects and professional color schemes.',
+      },
+    },
   },
-  tags: ['autodocs'],
   argTypes: {
     variant: {
       control: 'select',
-      options: ['default', 'compact', 'detailed'],
+      options: ['default', 'compact', 'detailed', 'glassmorphism', 'blur'],
       description: 'Visual style variant of the card'
     },
     avatarSize: {
       control: 'select',
       options: ['small', 'medium', 'large'],
-      description: 'Size of the profile avatar'
-    },
-    showStats: {
-      control: 'boolean',
-      description: 'Show user statistics section'
-    },
-    showSocial: {
-      control: 'boolean',
-      description: 'Show social media links'
+      description: 'Size of the avatar image'
     },
     isFollowing: {
       control: 'boolean',
@@ -38,351 +29,265 @@ const meta: Meta<typeof ProfileCard> = {
     },
     isOnline: {
       control: 'boolean',
-      description: 'Show online status indicator'
+      description: 'Whether the user is currently online'
     },
     verified: {
       control: 'boolean',
-      description: 'Show verification badge'
+      description: 'Whether the profile is verified'
+    },
+    showStats: {
+      control: 'boolean',
+      description: 'Whether to show statistics'
+    },
+    showSocial: {
+      control: 'boolean',
+      description: 'Whether to show social links'
+    },
+    gradient: {
+      control: 'boolean',
+      description: 'Whether to apply gradient overlay (glassmorphism/blur variants)'
     }
-  }
+  },
+  decorators: [
+    (Story, context) => {
+      const { variant } = context.args
+      const isGlassmorphism = variant === 'glassmorphism' || variant === 'blur'
+      
+      return (
+        <div className={`p-8 ${isGlassmorphism ? 'bg-gradient-to-br from-blue-400 via-cyan-500 to-teal-600 min-h-screen' : 'bg-slate-50'}`}>
+          <div className="max-w-md mx-auto">
+            <Story />
+          </div>
+        </div>
+      )
+    }
+  ]
 }
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-// Default story
+// Sample data for all stories
+const sampleAvatar = 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
+
+const socialIcons = {
+  twitter: (
+    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+      <path d="M6.29 18.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0020 3.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.073 4.073 0 01.8 7.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 010 16.407a11.616 11.616 0 006.29 1.84" />
+    </svg>
+  ),
+  linkedin: (
+    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+      <path fillRule="evenodd" d="M16.338 16.338H13.67V12.16c0-.995-.017-2.277-1.387-2.277-1.39 0-1.601 1.086-1.601 2.207v4.248H8.014v-8.59h2.559v1.174h.037c.356-.675 1.227-1.387 2.526-1.387 2.703 0 3.203 1.778 3.203 4.092v4.711zM5.005 6.575a1.548 1.548 0 11-.003-3.096 1.548 1.548 0 01.003 3.096zm-1.337 9.763H6.34v-8.59H3.667v8.59zM17.668 1H2.328C1.595 1 1 1.581 1 2.298v15.403C1 18.418 1.595 19 2.328 19h15.34c.734 0 1.332-.582 1.332-1.299V2.298C19 1.581 18.402 1 17.668 1z" clipRule="evenodd" />
+    </svg>
+  ),
+  github: (
+    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+      <path fillRule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clipRule="evenodd" />
+    </svg>
+  )
+}
+
+const sampleStats = [
+  { value: '1.2K', label: 'Followers', icon: '👥' },
+  { value: '234', label: 'Following', icon: '➕' },
+  { value: '45', label: 'Posts', icon: '📝' }
+]
+
+const sampleSocialLinks = [
+  { platform: 'Twitter', url: 'https://twitter.com', icon: socialIcons.twitter },
+  { platform: 'LinkedIn', url: 'https://linkedin.com', icon: socialIcons.linkedin },
+  { platform: 'GitHub', url: 'https://github.com', icon: socialIcons.github }
+]
+
 export const Default: Story = {
   args: {
-    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&q=80',
+    avatar: sampleAvatar,
     name: 'Alex Johnson',
     title: 'Software Engineer',
-    bio: 'Passionate developer who loves building amazing products and solving complex problems.',
+    bio: 'Passionate about creating beautiful and functional user interfaces. Love working with React and modern web technologies.',
     location: 'San Francisco, CA',
-    onFollow: () => console.log('Followed user'),
-    onMessage: () => console.log('Message sent'),
-  }
-}
-
-// With all features
-export const WithAllFeatures: Story = {
-  args: {
-    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&q=80',
-    name: 'Sarah Chen',
-    title: 'UX Designer & Creative Director',
-    bio: 'Creative designer passionate about user experience, accessibility, and inclusive design. Love to mentor and share knowledge.',
-    location: 'New York, NY',
-    verified: true,
+    stats: sampleStats,
+    socialLinks: sampleSocialLinks,
     isOnline: true,
-    stats: [
-      { label: 'Followers', value: '12.5K', icon: <span>👥</span> },
-      { label: 'Following', value: '1.2K', icon: <span>👤</span> },
-      { label: 'Projects', value: '48', icon: <span>🚀</span> }
-    ],
-    socialLinks: [
-      { 
-        platform: 'twitter', 
-        url: 'https://twitter.com/sarahchen', 
-        icon: (
-          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-          </svg>
-        )
-      },
-      { 
-        platform: 'linkedin', 
-        url: 'https://linkedin.com/in/sarahchen', 
-        icon: (
-          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-          </svg>
-        )
-      },
-      { 
-        platform: 'github', 
-        url: 'https://github.com/sarahchen', 
-        icon: (
-          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-          </svg>
-        )
-      }
-    ],
-    onFollow: () => console.log('Followed user'),
-    onMessage: () => console.log('Message sent'),
-    onConnect: () => console.log('Connection sent'),
+    verified: true,
+    onFollow: () => alert('Follow clicked'),
+    onMessage: () => alert('Message clicked'),
+    onConnect: () => alert('Connect clicked')
   }
 }
 
-// Compact variant
 export const Compact: Story = {
   args: {
     ...Default.args,
     variant: 'compact',
-    name: 'Mike Rodriguez',
-    title: 'Product Manager'
+    avatarSize: 'small',
+    bio: 'Software engineer passionate about React and modern web technologies.'
   }
 }
 
-// Detailed variant
 export const Detailed: Story = {
   args: {
-    ...WithAllFeatures.args,
+    ...Default.args,
     variant: 'detailed',
-    name: 'Emma Wilson',
-    title: 'Senior Frontend Developer'
-  }
-}
-
-// Different avatar sizes
-export const SmallAvatar: Story = {
-  args: {
-    ...Default.args,
-    avatarSize: 'small',
-    name: 'Small Avatar Profile'
-  }
-}
-
-export const LargeAvatar: Story = {
-  args: {
-    ...Default.args,
     avatarSize: 'large',
-    name: 'Large Avatar Profile'
+    bio: 'Senior Software Engineer with 8+ years of experience building scalable web applications. Passionate about creating beautiful and functional user interfaces using React, TypeScript, and modern web technologies. Always excited to learn new things and share knowledge with the community.'
   }
 }
 
-// Following state
+export const Glassmorphism: Story = {
+  args: {
+    ...Default.args,
+    variant: 'glassmorphism',
+    gradient: true,
+    name: 'Maya Chen',
+    title: 'UI/UX Designer',
+    bio: 'Creating stunning digital experiences with a focus on user-centered design. Specializing in modern interfaces and interaction design.',
+    location: 'New York, NY'
+  }
+}
+
+export const Blur: Story = {
+  args: {
+    ...Default.args,
+    variant: 'blur',
+    gradient: false,
+    name: 'David Rodriguez',
+    title: 'Product Manager',
+    bio: 'Building products that make a difference. Passionate about user experience and data-driven decision making.',
+    location: 'Austin, TX'
+  }
+}
+
 export const Following: Story = {
   args: {
     ...Default.args,
     isFollowing: true,
-    name: 'Already Following'
+    name: 'Sarah Wilson',
+    title: 'Frontend Developer',
+    bio: 'React enthusiast and open source contributor. Love building responsive and accessible web applications.'
   }
 }
 
-// Verified and online
-export const VerifiedAndOnline: Story = {
-  args: {
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80',
-    name: 'David Kim',
-    title: 'Tech Lead',
-    bio: 'Building the future of web development.',
-    location: 'Seattle, WA',
-    verified: true,
-    isOnline: true,
-    onFollow: () => console.log('Followed user'),
-    onMessage: () => console.log('Message sent'),
-  }
-}
-
-// Without stats and social
-export const MinimalProfile: Story = {
-  args: {
-    avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b1e4?w=150&q=80',
-    name: 'Lisa Park',
-    title: 'Graphic Designer',
-    bio: 'Creating beautiful visual experiences.',
-    showStats: false,
-    showSocial: false,
-    onFollow: () => console.log('Followed user'),
-  }
-}
-
-// Team member style
-export const TeamMember: Story = {
-  args: {
-    avatar: 'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=150&q=80',
-    name: 'James Thompson',
-    title: 'Engineering Manager',
-    bio: 'Leading a team of talented engineers to build scalable solutions.',
-    location: 'Austin, TX',
-    stats: [
-      { label: 'Team Size', value: '12', icon: <span>👥</span> },
-      { label: 'Projects', value: '25', icon: <span>📋</span> },
-      { label: 'Experience', value: '8yr', icon: <span>⭐</span> }
-    ],
-    variant: 'detailed',
-    onMessage: () => console.log('Message sent'),
-    onConnect: () => console.log('Connection sent'),
-  }
-}
-
-// Custom button text
-export const CustomButtonText: Story = {
+export const Offline: Story = {
   args: {
     ...Default.args,
-    followText: 'Subscribe',
-    messageText: 'Send Email',
-    connectText: 'Add Friend'
+    isOnline: false,
+    verified: false,
+    name: 'Michael Brown',
+    title: 'Backend Developer',
+    bio: 'Building robust and scalable APIs. Experienced with Node.js, Python, and cloud technologies.'
   }
 }
 
-// Profile grid layout
-export const ProfileGrid: Story = {
-  render: () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl">
-      <ProfileCard
-        avatar="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&q=80"
-        name="Alex Johnson"
-        title="Software Engineer"
-        bio="Full-stack developer passionate about React and Node.js"
-        location="San Francisco, CA"
-        verified={true}
-        stats={[
-          { label: 'Repos', value: '42', icon: <span>📁</span> },
-          { label: 'Stars', value: '1.2K', icon: <span>⭐</span> },
-          { label: 'Followers', value: '856', icon: <span>👥</span> }
-        ]}
-        onFollow={() => console.log('Followed Alex')}
-        onMessage={() => console.log('Message Alex')}
-      />
-      <ProfileCard
-        avatar="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&q=80"
-        name="Sarah Chen"
-        title="UX Designer"
-        bio="Creating delightful user experiences with a focus on accessibility"
-        location="New York, NY"
-        isOnline={true}
-        stats={[
-          { label: 'Projects', value: '28', icon: <span>🎨</span> },
-          { label: 'Awards', value: '5', icon: <span>🏆</span> },
-          { label: 'Clients', value: '15', icon: <span>💼</span> }
-        ]}
-        onFollow={() => console.log('Followed Sarah')}
-        onMessage={() => console.log('Message Sarah')}
-      />
-      <ProfileCard
-        avatar="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80"
-        name="David Kim"
-        title="Product Manager"
-        bio="Bridging the gap between technology and user needs"
-        location="Seattle, WA"
-        verified={true}
-        isOnline={true}
-        stats={[
-          { label: 'Products', value: '8', icon: <span>🚀</span> },
-          { label: 'Teams', value: '3', icon: <span>👥</span> },
-          { label: 'Experience', value: '6yr', icon: <span>📈</span> }
-        ]}
-        onFollow={() => console.log('Followed David')}
-        onMessage={() => console.log('Message David')}
-      />
-      <ProfileCard
-        avatar="https://images.unsplash.com/photo-1494790108755-2616b612b1e4?w=150&q=80"
-        name="Lisa Park"
-        title="Data Scientist"
-        bio="Turning data into actionable insights for business growth"
-        location="Los Angeles, CA"
-        stats={[
-          { label: 'Models', value: '15', icon: <span>🤖</span> },
-          { label: 'Accuracy', value: '94%', icon: <span>🎯</span> },
-          { label: 'Papers', value: '12', icon: <span>📄</span> }
-        ]}
-        onFollow={() => console.log('Followed Lisa')}
-        onMessage={() => console.log('Message Lisa')}
-      />
-      <ProfileCard
-        avatar="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=150&q=80"
-        name="James Thompson"
-        title="DevOps Engineer"
-        bio="Building reliable infrastructure and streamlining deployments"
-        location="Austin, TX"
-        verified={true}
-        stats={[
-          { label: 'Uptime', value: '99.9%', icon: <span>⚡</span> },
-          { label: 'Deploys', value: '500+', icon: <span>🚀</span> },
-          { label: 'Servers', value: '200', icon: <span>🖥️</span> }
-        ]}
-        onFollow={() => console.log('Followed James')}
-        onMessage={() => console.log('Message James')}
-      />
-      <ProfileCard
-        avatar="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&q=80"
-        name="Maria Rodriguez"
-        title="Mobile Developer"
-        bio="Creating amazing mobile experiences for iOS and Android"
-        location="Miami, FL"
-        isOnline={true}
-        stats={[
-          { label: 'Apps', value: '18', icon: <span>📱</span> },
-          { label: 'Downloads', value: '2M+', icon: <span>⬇️</span> },
-          { label: 'Rating', value: '4.8', icon: <span>⭐</span> }
-        ]}
-        onFollow={() => console.log('Followed Maria')}
-        onMessage={() => console.log('Message Maria')}
-      />
-    </div>
-  ),
-  parameters: {
-    layout: 'padded'
-  }
-}
-
-// Interactive example
-export const Interactive: Story = {
+export const NoActions: Story = {
   args: {
-    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&q=80',
-    name: 'Interactive Profile',
-    title: 'Click buttons to see interactions',
-    bio: 'This profile demonstrates all interactive features. Check the Actions tab to see the console logs.',
-    location: 'Demo Location',
-    verified: true,
+    avatar: sampleAvatar,
+    name: 'Emma Davis',
+    title: 'Data Scientist',
+    bio: 'Turning data into insights. Passionate about machine learning and statistical analysis.',
+    location: 'Seattle, WA',
+    stats: sampleStats,
+    socialLinks: sampleSocialLinks,
     isOnline: true,
-    stats: [
-      { label: 'Clicks', value: '∞', icon: <span>🖱️</span> },
-      { label: 'Demo', value: '100%', icon: <span>🎯</span> },
-      { label: 'Fun', value: 'MAX', icon: <span>🎉</span> }
-    ],
-    socialLinks: [
-      { platform: 'demo', url: '#', icon: <span>🔗</span> }
-    ],
-    onFollow: () => console.log('🎉 User followed!'),
-    onMessage: () => console.log('💌 Message sent!'),
-    onConnect: () => console.log('🤝 Connection request sent!'),
-    onClick: () => console.log('👆 Profile card clicked!')
+    verified: true
   }
 }
 
-// Different variants showcase
-export const VariantsShowcase: Story = {
-  render: () => (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl">
-      <div className="space-y-2">
-        <h3 className="text-lg font-semibold">Compact</h3>
-        <ProfileCard
-          avatar="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&q=80"
-          name="Compact Profile"
-          title="Software Engineer"
-          bio="This is the compact variant with minimal spacing."
-          variant="compact"
-          onFollow={() => console.log('Followed')}
-        />
+export const MinimalStats: Story = {
+  args: {
+    ...Default.args,
+    stats: [
+      { value: '500', label: 'Followers' },
+      { value: '125', label: 'Following' }
+    ],
+    showSocial: false,
+    name: 'James Taylor',
+    title: 'DevOps Engineer'
+  }
+}
+
+export const NoSocial: Story = {
+  args: {
+    ...Default.args,
+    showSocial: false,
+    name: 'Lisa Anderson',
+    title: 'Full Stack Developer',
+    bio: 'Building end-to-end applications with modern technologies. Always learning and growing.'
+  }
+}
+
+export const CustomAvatar: Story = {
+  args: {
+    ...Default.args,
+    avatar: (
+      <div className="w-full h-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-2xl font-bold">
+        JD
       </div>
-      <div className="space-y-2">
-        <h3 className="text-lg font-semibold">Default</h3>
-        <ProfileCard
-          avatar="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&q=80"
-          name="Default Profile"
-          title="UX Designer"
-          bio="This is the default variant with standard spacing."
-          onFollow={() => console.log('Followed')}
-        />
-      </div>
-      <div className="space-y-2">
-        <h3 className="text-lg font-semibold">Detailed</h3>
-        <ProfileCard
-          avatar="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80"
-          name="Detailed Profile"
-          title="Product Manager"
-          bio="This is the detailed variant with generous spacing and enhanced visuals."
-          variant="detailed"
-          verified={true}
-          onFollow={() => console.log('Followed')}
-          onMessage={() => console.log('Message sent')}
-        />
-      </div>
-    </div>
-  ),
+    ),
+    name: 'John Doe',
+    title: 'Creative Director'
+  }
+}
+
+export const GlassmorphismShowcase: Story = {
+  args: {
+    variant: 'glassmorphism',
+    gradient: true,
+    avatar: sampleAvatar,
+    name: 'Sophia Kim',
+    title: 'Design Systems Lead',
+    bio: 'Crafting cohesive design languages that scale across products. Passionate about accessibility and inclusive design.',
+    location: 'Los Angeles, CA',
+    stats: [
+      { value: '2.4K', label: 'Followers', icon: '✨' },
+      { value: '456', label: 'Following', icon: '🎨' },
+      { value: '89', label: 'Projects', icon: '🚀' }
+    ],
+    socialLinks: sampleSocialLinks,
+    isOnline: true,
+    verified: true,
+    avatarSize: 'large',
+    onFollow: () => alert('Follow clicked'),
+    onMessage: () => alert('Message clicked'),
+    onConnect: () => alert('Connect clicked')
+  },
   parameters: {
-    layout: 'padded'
+    docs: {
+      description: {
+        story: 'Stunning glassmorphism variant with backdrop blur effects and gradient overlays, perfect for modern applications.'
+      }
+    }
+  }
+}
+
+export const BlurShowcase: Story = {
+  args: {
+    variant: 'blur',
+    gradient: false,
+    avatar: sampleAvatar,
+    name: 'Marcus Thompson',
+    title: 'Technical Lead',
+    bio: 'Leading high-performance engineering teams. Focused on architecture, scalability, and developer experience.',
+    location: 'Toronto, ON',
+    stats: [
+      { value: '3.1K', label: 'Followers', icon: '👥' },
+      { value: '892', label: 'Following', icon: '🔗' },
+      { value: '156', label: 'Contributions', icon: '💡' }
+    ],
+    socialLinks: sampleSocialLinks,
+    isOnline: true,
+    verified: true,
+    avatarSize: 'large',
+    onFollow: () => alert('Follow clicked'),
+    onMessage: () => alert('Message clicked'),
+    onConnect: () => alert('Connect clicked')
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Beautiful blur variant with professional styling, ideal for corporate and business applications.'
+      }
+    }
   }
 }

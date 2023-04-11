@@ -21,7 +21,7 @@ const meta: Meta<typeof StatCard> = {
     },
     color: {
       control: 'select',
-      options: ['default', 'primary', 'success', 'warning', 'danger', 'purple', 'cyan', 'rose'],
+      options: ['default', 'primary', 'success', 'warning', 'info', 'teal', 'cyan', 'slate'],
       description: 'Color scheme with beautiful gradients'
     },
     size: {
@@ -47,7 +47,7 @@ const meta: Meta<typeof StatCard> = {
       // Add beautiful background for glassmorphism demos
       if (context.args.variant === 'glassmorphism' || context.args.variant === 'blur') {
         return (
-          <div className="relative min-h-[400px] rounded-2xl overflow-hidden bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 p-8 flex items-center justify-center">
+          <div className="relative min-h-[400px] rounded-2xl overflow-hidden bg-gradient-to-br from-blue-400 via-cyan-500 to-teal-500 p-8 flex items-center justify-center">
             {/* Animated background elements */}
             <div className="absolute inset-0 opacity-30">
               <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-white/20 rounded-full blur-xl animate-pulse" />
@@ -180,7 +180,7 @@ export const ColorSpectrum: Story = {
       <StatCard
         value="+23%"
         label="Growth"
-        color="purple"
+        color="teal"
         icon={<GrowthIcon />}
         trend={{ value: 23.4, direction: 'up' }}
         size="medium"
@@ -188,7 +188,7 @@ export const ColorSpectrum: Story = {
       <StatCard
         value="4.8"
         label="Rating"
-        color="rose"
+        color="info"
         icon={<RevenueIcon />}
         trend={{ value: 0.3, direction: 'up' }}
         size="medium"
@@ -204,7 +204,7 @@ export const ColorSpectrum: Story = {
       <StatCard
         value="1.2M"
         label="Views"
-        color="danger"
+        color="slate"
         icon={<OrdersIcon />}
         trend={{ value: 45.2, direction: 'up' }}
         size="medium"
@@ -269,7 +269,7 @@ export const GlassmorphismGrid: Story = {
         trend={{ value: 156.4, direction: 'up', label: 'YoY' }}
         variant="glassmorphism"
         gradient={true}
-        color="purple"
+        color="teal"
         chart={<MiniChart />}
       />
       <StatCard
@@ -280,7 +280,7 @@ export const GlassmorphismGrid: Story = {
         trend={{ value: 0.2, direction: 'up', label: 'this month' }}
         variant="glassmorphism"
         gradient={true}
-        color="rose"
+        color="info"
         chart={<MiniChart />}
       />
       <StatCard
@@ -298,7 +298,7 @@ export const GlassmorphismGrid: Story = {
   ),
   decorators: [
     (Story) => (
-      <div className="relative min-h-[600px] rounded-3xl overflow-hidden bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-8">
+      <div className="relative min-h-[600px] rounded-3xl overflow-hidden bg-gradient-to-br from-indigo-500 via-blue-500 to-cyan-500 p-8">
         {/* Animated background */}
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-1/4 left-1/4 w-40 h-40 bg-white/30 rounded-full blur-2xl animate-pulse" />
@@ -351,7 +351,7 @@ export const SizeVariants: Story = {
           icon={<OrdersIcon />}
           trend={{ value: 25.8, direction: 'up', label: 'this month' }}
           size="large"
-          color="purple"
+          color="teal"
           chart={<MiniChart />}
         />
       </div>
@@ -421,7 +421,7 @@ export const AnimatedShowcase: Story = {
         icon={<GrowthIcon />}
         trend={{ value: 100, direction: 'up', label: 'infinity' }}
         animated={true}
-        color="purple"
+        color="teal"
         variant="detailed"
       />
       <StatCard
@@ -493,7 +493,7 @@ export const DashboardLayout: Story = {
           label="Growth"
           icon={<GrowthIcon />}
           trend={{ value: 23.4, direction: 'up', label: 'this quarter' }}
-          color="purple"
+          color="teal"
           variant="detailed"
         />
       </div>
@@ -520,7 +520,7 @@ export const DashboardLayout: Story = {
           trend={{ value: 0.3, direction: 'up', label: 'this month' }}
           variant="glassmorphism"
           gradient={true}
-          color="rose"
+          color="info"
           size="large"
           chart={<MiniChart />}
         />

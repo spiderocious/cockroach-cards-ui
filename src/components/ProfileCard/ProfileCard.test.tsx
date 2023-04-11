@@ -143,13 +143,13 @@ describe('ProfileCard', () => {
   it('displays online indicator when isOnline is true', () => {
     const { container } = render(
       <ProfileCard
-        avatar={mockProfile.avatar}
-        name={mockProfile.name}
+        avatar="test-avatar.jpg"
+        name="John Doe"
         isOnline={true}
       />
     )
     
-    const onlineIndicator = container.querySelector('.bg-green-500')
+    const onlineIndicator = container.querySelector('.bg-emerald-500')
     expect(onlineIndicator).toBeInTheDocument()
   })
 
@@ -162,7 +162,7 @@ describe('ProfileCard', () => {
     )
     const card = container.firstChild as HTMLElement
     
-    expect(card).toHaveClass('bg-white', 'border', 'border-gray-200', 'shadow-sm', 'p-5')
+    expect(card).toHaveClass('bg-white', 'border', 'border-slate-200', 'shadow-lg', 'p-7')
   })
 
   it('applies compact variant when specified', () => {
@@ -175,7 +175,7 @@ describe('ProfileCard', () => {
     )
     const card = container.firstChild as HTMLElement
     
-    expect(card).toHaveClass('p-4')
+    expect(card).toHaveClass('p-6')
   })
 
   it('applies detailed variant when specified', () => {
@@ -188,23 +188,23 @@ describe('ProfileCard', () => {
     )
     const card = container.firstChild as HTMLElement
     
-    expect(card).toHaveClass('p-6', 'shadow-md')
+    expect(card).toHaveClass('p-8', 'shadow-xl')
   })
 
   it('applies medium avatar size by default', () => {
-    render(
+    const { container } = render(
       <ProfileCard
         avatar={mockProfile.avatar}
         name={mockProfile.name}
       />
     )
     
-    const avatarImg = screen.getByRole('img')
-    expect(avatarImg).toHaveClass('w-16', 'h-16')
+    const avatarContainer = container.querySelector('.w-20.h-20')
+    expect(avatarContainer).toBeInTheDocument()
   })
 
   it('applies different avatar sizes', () => {
-    render(
+    const { container } = render(
       <ProfileCard
         avatar={mockProfile.avatar}
         name={mockProfile.name}
@@ -212,8 +212,8 @@ describe('ProfileCard', () => {
       />
     )
     
-    const avatarImg = screen.getByRole('img')
-    expect(avatarImg).toHaveClass('w-20', 'h-20')
+    const avatarContainer = container.querySelector('.w-24.h-24')
+    expect(avatarContainer).toBeInTheDocument()
   })
 
   it('handles follow action', () => {
@@ -451,5 +451,75 @@ describe('ProfileCard', () => {
     expect(screen.getByRole('button', { name: /follow/i })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /message/i })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /connect/i })).toBeInTheDocument()
+  })
+
+  it('applies glassmorphism variant', () => {
+    const { container } = render(
+      <ProfileCard
+        avatar={mockProfile.avatar}
+        name={mockProfile.name}
+        variant="glassmorphism"
+      />
+    )
+    const card = container.firstChild as HTMLElement
+    
+    expect(card).toHaveClass('bg-white/20', 'backdrop-blur-xl', 'border-white/30')
+  })
+
+  it('applies blur variant', () => {
+    const { container } = render(
+      <ProfileCard
+        avatar={mockProfile.avatar}
+        name={mockProfile.name}
+        variant="blur"
+      />
+    )
+    const card = container.firstChild as HTMLElement
+    
+    expect(card).toHaveClass('bg-white/80', 'backdrop-blur-md', 'border-white/40')
+  })
+
+  it('renders gradient overlay for glassmorphism with gradient enabled', () => {
+    const { container } = render(
+      <ProfileCard
+        avatar={mockProfile.avatar}
+        name={mockProfile.name}
+        variant="glassmorphism"
+        gradient={true}
+      />
+    )
+    
+    const gradientOverlay = container.querySelector('.bg-gradient-to-br')
+    expect(gradientOverlay).toBeInTheDocument()
+  })
+
+  it('renders sparkle effects for glassmorphism variant', () => {
+    const { container } = render(
+      <ProfileCard
+        avatar={mockProfile.avatar}
+        name={mockProfile.name}
+        variant="glassmorphism"
+      />
+    )
+    
+    const sparkle = container.querySelector('.animate-ping')
+    expect(sparkle).toBeInTheDocument()
+  })
+
+  it('applies professional color schemes for glassmorphism text', () => {
+    render(
+      <ProfileCard
+        avatar={mockProfile.avatar}
+        name="Test User"
+        title="Test Title"
+        variant="glassmorphism"
+      />
+    )
+    
+    const nameElement = screen.getByText('Test User')
+    const titleElement = screen.getByText('Test Title')
+    
+    expect(nameElement).toHaveClass('text-white')
+    expect(titleElement).toHaveClass('text-white/90')
   })
 })
