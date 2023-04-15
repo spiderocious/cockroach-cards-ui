@@ -8,44 +8,160 @@ const meta: Meta<typeof ArticleCard> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'A comprehensive article card component for blog posts and articles with professional styling.',
+        component: `
+## ArticleCard
+
+A comprehensive, professional article card component designed for blog posts, news articles, and editorial content with flexible layouts and rich content support.
+
+### Features
+
+- **Multiple Layouts**: Default vertical, horizontal, and minimal variants
+- **Flexible Image Positioning**: Top, left, or right image placement
+- **Rich Content Support**: Title, excerpt, author info, tags, reading time
+- **Professional Styling**: Clean typography with professional blue/green color schemes
+- **Interactive Elements**: Click handlers, hover effects, and smooth transitions
+- **Responsive Design**: Adapts seamlessly to different screen sizes
+- **Accessibility**: Proper semantic markup and keyboard navigation
+
+### Usage
+
+\`\`\`tsx
+import { ArticleCard } from 'cockroach-ui-cards'
+
+// Basic article card
+<ArticleCard
+  title="Understanding React Hooks"
+  excerpt="A comprehensive guide to React Hooks and their practical applications."
+  author={{
+    name: "Jane Smith",
+    avatar: "/avatars/jane.jpg"
+  }}
+  publishedAt="2024-01-15"
+  readingTime="5 min read"
+  imageUrl="/articles/react-hooks.jpg"
+  tags={['React', 'JavaScript', 'Web Development']}
+/>
+
+// Horizontal layout
+<ArticleCard
+  variant="horizontal"
+  imagePosition="left"
+  title="Advanced TypeScript Patterns"
+  excerpt="Learn advanced TypeScript patterns for better type safety."
+  // ... other props
+/>
+
+// Minimal variant
+<ArticleCard
+  variant="minimal"
+  showImage={false}
+  title="Quick Tips for Better Code"
+  excerpt="Simple tips to improve your code quality immediately."
+  // ... other props
+/>
+\`\`\`
+
+### Design Principles
+
+- **Content First**: Typography and readability prioritized
+- **Professional**: Clean, modern design suitable for business content
+- **Flexible**: Multiple variants for different use cases
+- **Consistent**: Unified styling across all card types
+        `,
       },
     },
   },
   argTypes: {
+    title: {
+      description: 'Article title/headline',
+      control: 'text'
+    },
+    excerpt: {
+      description: 'Brief description or excerpt of the article',
+      control: 'text'
+    },
+    image: {
+      description: 'URL of the article featured image or React component',
+      control: 'text'
+    },
     variant: {
       control: 'select',
       options: ['default', 'horizontal', 'minimal'],
-      description: 'Visual style variant of the card'
+      description: 'Visual layout variant - default for vertical cards, horizontal for side-by-side layout, minimal for text-focused cards',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'default' }
+      }
     },
     imagePosition: {
       control: 'select',
       options: ['top', 'left', 'right'],
-      description: 'Position of the image relative to content'
+      description: 'Position of the image relative to content (affects horizontal variant)',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'top' }
+      }
     },
     showImage: {
       control: 'boolean',
-      description: 'Whether to show the article image'
+      description: 'Whether to display the article image',
+      table: {
+        defaultValue: { summary: 'true' }
+      }
     },
     showAuthor: {
       control: 'boolean',
-      description: 'Whether to show author information'
+      description: 'Whether to display author information',
+      table: {
+        defaultValue: { summary: 'true' }
+      }
     },
     showMeta: {
-      control: 'boolean',
-      description: 'Whether to show meta information (date, read time)'
+      control: 'boolean', 
+      description: 'Whether to display meta information (date, reading time)',
+      table: {
+        defaultValue: { summary: 'true' }
+      }
     },
-    isBookmarked: {
-      control: 'boolean',
-      description: 'Whether the article is bookmarked'
+    author: {
+      description: 'Author information object with name, avatar, and bio',
+      control: 'object'
     },
-    isLiked: {
-      control: 'boolean',
-      description: 'Whether the article is liked'
+    publishDate: {
+      description: 'Publication date (string or Date)',
+      control: 'text'
     },
-    likeCount: {
-      control: 'number',
-      description: 'Number of likes for the article'
+    readTime: {
+      description: 'Estimated reading time text',
+      control: 'text'
+    },
+    tags: {
+      description: 'Array of tag strings',
+      control: 'object'
+    },
+    onClick: {
+      description: 'Callback when the article card is clicked',
+      action: 'article-clicked'
+    },
+    onRead: {
+      description: 'Callback when the read more button is clicked',
+      action: 'read-clicked'
+    },
+    onShare: {
+      description: 'Callback when the share button is clicked',
+      action: 'share-clicked'
+    },
+    onBookmark: {
+      description: 'Callback when the bookmark button is clicked',
+      action: 'bookmark-clicked'
+    },
+    onLike: {
+      description: 'Callback when the like button is clicked',
+      action: 'like-clicked'
+    },
+    className: {
+      description: 'Additional CSS classes to apply',
+      control: 'text'
     }
   },
   decorators: [
@@ -71,6 +187,13 @@ const sampleAuthor = {
 const sampleImage = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&h=600&q=80'
 
 export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'The default article card layout with vertical orientation, featuring full image, author information, metadata, and interactive elements. Perfect for blog listings, news feeds, and content portfolios.'
+      }
+    }
+  },
   args: {
     title: 'Building Scalable React Applications',
     excerpt: 'Learn how to build maintainable and scalable React applications using modern best practices, state management patterns, and performance optimization techniques.',
@@ -89,6 +212,13 @@ export const Default: Story = {
 }
 
 export const Horizontal: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Horizontal layout variant with side-by-side image and content arrangement. Ideal for featured articles, newsletter sections, and compact content displays where horizontal space is available.'
+      }
+    }
+  },
   args: {
     ...Default.args,
     variant: 'horizontal',
@@ -99,6 +229,13 @@ export const Horizontal: Story = {
 }
 
 export const Minimal: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Minimal variant focusing on content with reduced visual elements. Perfect for text-heavy layouts, archive pages, and situations where content density is prioritized over visual impact.'
+      }
+    }
+  },
   args: {
     ...Default.args,
     variant: 'minimal',
@@ -109,6 +246,13 @@ export const Minimal: Story = {
 }
 
 export const WithoutImage: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Article card without featured image, focusing entirely on textual content. Useful for text-only articles, opinion pieces, or when images are not available or relevant.'
+      }
+    }
+  },
   args: {
     ...Default.args,
     showImage: false,

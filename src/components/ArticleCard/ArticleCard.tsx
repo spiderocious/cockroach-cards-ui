@@ -109,16 +109,9 @@ const ArticleCard = React.forwardRef<HTMLDivElement, ArticleCardProps>(
     
     // Variant styles with professional colors
     const variantClasses = {
-      default: 'bg-white border border-slate-200 shadow-lg hover:shadow-xl',
-      horizontal: 'bg-white border border-slate-200 shadow-md hover:shadow-lg',
-      minimal: 'bg-white border border-slate-100 shadow-sm hover:shadow-md'
-    }
-    
-    // Layout classes based on image position
-    const layoutClasses = {
-      top: 'flex flex-col',
-      left: 'flex flex-row',
-      right: 'flex flex-row-reverse'
+      default: 'bg-white border border-slate-200 shadow-lg hover:shadow-xl flex flex-col',
+      horizontal: 'bg-white border border-slate-200 shadow-md hover:shadow-lg flex flex-row',
+      minimal: 'bg-white border border-slate-100 shadow-sm hover:shadow-md flex flex-col'
     }
     
     // Default icons with professional styling
@@ -374,7 +367,7 @@ const ArticleCard = React.forwardRef<HTMLDivElement, ArticleCardProps>(
         className={cn(
           'relative rounded-xl transition-all duration-300 group overflow-hidden',
           variantClasses[variant],
-          variant === 'horizontal' ? layoutClasses[imagePosition] : layoutClasses.top,
+          variant === 'horizontal' && imagePosition === 'right' && 'flex-row-reverse',
           onClick && 'cursor-pointer hover:scale-[1.02]',
           className
         )}
